@@ -75,4 +75,3 @@ jobs:
           files: target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }}
           target_commitish: "${{ github.sha }}"
           tag_name: ${{ github.run_id }}
-        if: startsWith( github.ref, 'refs/tags/v' )
