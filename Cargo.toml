@@ -1,0 +1,17 @@
+[package]
+name = "gradlew-rs"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "gradlew"
+path = "src/main.rs"
+
+# some size improvement steps from https://github.com/johnthagen/min-sized-rust
+[profile.release]
+opt-level = "z"  # Optimize for size.
+strip = true  # Automatically strip symbols from the binary.
+lto = true
+codegen-units = 1
+
+[dependencies]
