@@ -53,14 +53,20 @@ jobs:
         # the platform's native paths and refuses to build.
         shell: powershell
         run: |
-          echo target/${{ matrix.platform.target }}/release/
-      - name: Build binary (Windows)
+          & ${{ matrix.platform.cmd }} build --locked --release --target ${{ matrix.platform.target }}
+        if: contains(matrix.platform.os, 'windows')
+      - name: list files (*nix)
+        shell: bash
+        run: |
+          ls -alh target/${{ matrix.platform.target }}/release/
+        if: ${{ !contains(matrix.platform.os, 'windows') }}
+      - name: list files (Windows)
         # We have to use the platform's native shell. If we use bash on
         # Windows then OpenSSL complains that the Perl it finds doesn't use
         # the platform's native paths and refuses to build.
         shell: powershell
         run: |
-          & ${{ matrix.platform.cmd }} build --locked --release --target ${{ matrix.platform.target }}
+          dir target/${{ matrix.platform.target }}/release/
         if: contains(matrix.platform.os, 'windows')
       - name: Publish GitHub release
         uses: softprops/action-gh-release@v1
