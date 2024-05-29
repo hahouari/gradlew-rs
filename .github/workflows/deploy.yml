@@ -34,7 +34,7 @@ jobs:
     runs-on: ${{ matrix.platform.os }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install toolchain if not cross-compiling
         uses: dtolnay/rust-toolchain@stable
         with:
@@ -69,7 +69,7 @@ jobs:
           dir target/${{ matrix.platform.target }}/release/
         if: contains(matrix.platform.os, 'windows')
       - name: Publish GitHub release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }}
