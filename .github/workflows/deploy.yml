@@ -1,6 +1,6 @@
 name: Build executable
 on:
-  release:
+  push:
     branches:
       - dev
 
