@@ -17,6 +17,7 @@ jobs:
             os: ubuntu-latest
             target: x86_64-unknown-linux-musl
             bin: gradlew
+            bin_publish_name: gradlew-rs-x86_64-linux
             cmd: cargo
 
           - os_name: Windows-x86_64
@@ -55,23 +56,20 @@ jobs:
         run: |
           & ${{ matrix.platform.cmd }} build --locked --release --target ${{ matrix.platform.target }}
         if: contains(matrix.platform.os, 'windows')
-      - name: list files (*nix)
+      - name: Package as archive
         shell: bash
         run: |
-          ls -alh target/${{ matrix.platform.target }}/release/
-        if: ${{ !contains(matrix.platform.os, 'windows') }}
-      - name: list files (Windows)
-        # We have to use the platform's native shell. If we use bash on
-        # Windows then OpenSSL complains that the Perl it finds doesn't use
-        # the platform's native paths and refuses to build.
-        shell: powershell
-        run: |
-          dir target/${{ matrix.platform.target }}/release/
-        if: contains(matrix.platform.os, 'windows')
+          cd target/${{ matrix.platform.target }}/release
+          if [[ "${{ matrix.platform.os }}" == "windows-latest" ]]; then
+            7z a ../../../${{ matrix.platform.name }} ${{ matrix.platform.bin }}
+          else
+            tar czvf ../../../${{ matrix.platform.name }} ${{ matrix.platform.bin }}
+          fi
+          cd -
       - name: Publish GitHub release
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          files: target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }}
+          files: "gradlew*"
           target_commitish: "${{ github.sha }}"
           tag_name: ${{ github.run_id }}
