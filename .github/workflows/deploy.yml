@@ -17,7 +17,6 @@ jobs:
             os: ubuntu-latest
             target: x86_64-unknown-linux-musl
             bin: gradlew
-            bin_publish_name: gradlew-rs-x86_64-linux
             cmd: cargo
 
           - os_name: Windows-x86_64
@@ -61,9 +60,9 @@ jobs:
         run: |
           cd target/${{ matrix.platform.target }}/release
           if [[ "${{ matrix.platform.os }}" == "windows-latest" ]]; then
-            7z a ../../../${{ matrix.platform.name }} ${{ matrix.platform.bin }}
+            7z a /tmp/${{ matrix.platform.name }} ${{ matrix.platform.bin }}
           else
-            tar czvf ../../../${{ matrix.platform.name }} ${{ matrix.platform.bin }}
+            tar czvf /tmp/${{ matrix.platform.name }} ${{ matrix.platform.bin }}
           fi
           cd -
       - name: Publish GitHub release
