@@ -15,24 +15,15 @@ I simply now do
 gradlew --help
 ```
 
-## Why not alias on my own it instead?
-If you would like to be able to run `gradlew` from subdirectories as well,
-here are your options with your local `gradlew` file:
-* In case your active terminal is within a subdirectory, you need to do something like this:
-```shell
-cd ../ # go back to the project root directory
-./gradlew --help 
-```
-* If you don't want to `cd` back, you have to run something like:
-```shell
-# -p or --project-dir to specify where your root build files are
-# if you don't use it the command will fail.
-../gradlew -p ../ --help
-```
+## Why not use aliases instead?
+If you would like to be able to run `gradlew` from subdirectories as well, `gradlew-rs` handles this for you.
 
-The `gradlew-rs` handles this for you,
-the tool looks back the parent directories in case the gradlew isn't present in current directory,
-when it finds the gradlew file it doesn't have to cd back to it,
-and it doesn't use the `-p` argument internally to keep low footprint on the command itself,
-so you can use `-p` yourself without worrying about conflicting arguments,
-the command tool here simply spawn a process with `./gradlew` command within the correct directory.
+The command looks up the correct parent directory and spawns a `gradlew` process within that directory.
+
+## How to install?
+Download the [latest release](https://github.com/hahouari/gradlew-rs/releases/latest),
+decompress the binary executable and move it to a directory that is visible to your `PATH`.
+
+Example directories to this depending on your OS are: 
+* GNU Linux and macOS: `/usr/local/bin`
+* MS Windows: `C:\Windows\System32`
